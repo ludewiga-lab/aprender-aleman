@@ -1,94 +1,65 @@
-/* --- Estilos Generales (Base) --- */
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: sans-serif;
     text-align: center;
     background-color: #fdf6e3;
     margin: 0;
     padding: 10px;
     user-select: none;
-    -webkit-tap-highlight-color: transparent; /* Evita el cuadro azul al tocar en móvil */
+    touch-action: manipulation; /* Optimiza el toque en móvil */
 }
 
-h1 { color: #2c3e50; font-size: 2rem; margin: 15px 0; }
+h1 { font-size: 1.8rem; color: #2c3e50; }
 
-/* Contenedor flexible que se adapta al ancho */
 .container {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 15px;
-    padding: 10px;
+    gap: 10px;
 }
 
-/* --- Estilo de las Tarjetas (Optimizado para dedos pequeños) --- */
-.card {
+.mode-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+/* Tarjetas optimizadas para móvil */
+.card-mobile {
     background: white;
-    border: 6px solid #3498db;
-    border-radius: 20px;
-    width: 140px; /* Tamaño por defecto */
-    height: 140px;
+    border: 5px solid #3498db;
+    border-radius: 15px;
+    width: 28vw; /* Se ajusta al ancho del móvil */
+    height: 28vw;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    cursor: pointer;
-    transition: transform 0.1s;
     text-decoration: none;
-    box-shadow: 0 6px 0 #2980b9;
+    color: #333;
+    box-shadow: 0 4px 0 #bdc3c7;
 }
 
-.card:active {
-    transform: translateY(4px);
-    box-shadow: 0 2px 0 #2980b9;
-}
+.card-mobile .emoji { font-size: 40px; }
+.card-mobile small { font-weight: bold; margin-top: 5px; font-size: 12px; }
 
-.emoji { font-size: 70px; }
+/* Botón de inicio */
+.btn-home { font-size: 30px; text-decoration: none; position: fixed; top: 10px; left: 10px; z-index: 100; }
 
-/* --- Botones de Control --- */
-.btn-home { font-size: 35px; text-decoration: none; position: absolute; top: 10px; left: 10px; }
-
-.pregunta-box, .btn-learn {
-    background: #e67e22;
-    color: white;
-    padding: 15px 25px;
-    border-radius: 50px;
-    font-size: 1.2rem;
-    margin: 10px auto;
-    display: inline-block;
-    cursor: pointer;
-    border: none;
-    width: 80%; /* Casi todo el ancho en móvil */
-    max-width: 400px;
-}
-
-.btn-learn { background: #9b59b6; }
-
-/* --- AJUSTES ESPECÍFICOS PARA MÓVIL --- */
-@media (max-width: 600px) {
-    h1 { font-size: 1.5rem; }
-    
-    .container { gap: 10px; }
-
-    /* Hacemos que las tarjetas sean más grandes para que solo quepan 2 por fila */
-    .card {
-        width: 42vw; /* 42% del ancho de la pantalla */
-        height: 42vw;
-        border-width: 4px;
-    }
-
-    .emoji { font-size: 50px; }
-    
-    .card-abc {
-        width: 28vw; /* 3 letras por fila en el ABC */
-        height: 35vw;
-    }
-    
-    .abc-letter { font-size: 50px !important; }
-}
-
-/* Efecto de resaltado */
 .highlight {
     border-color: #f1c40f !important;
     background-color: #fff9c4 !important;
     transform: scale(1.05);
+}
+
+.btn-learn, .pregunta-box {
+    background: #e67e22;
+    color: white;
+    padding: 15px;
+    border-radius: 30px;
+    width: 90%;
+    max-width: 300px;
+    margin: 10px auto;
+    font-weight: bold;
+    border: none;
 }
