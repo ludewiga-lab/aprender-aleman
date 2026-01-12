@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .card-abc { width: 140px; height: 160px; font-size: 40px; }
+    </style>
+</head>
+<body>
+    <a href="index.html" class="btn-home">🏠</a>
+    <h1>Das ABC 🔤</h1>
+    <div class="pregunta-box" onclick="hacerPregunta()">🔊 Wo ist die Buchstabe?</div>
+    <div class="container" id="tablero"></div>
+
+    <script>
+        const alfabeto = [
+            {l: 'A', e: '🍎', w: 'Apfel'}, {l: 'B', e: '🐻', w: 'Bär'}, {l: 'C', e: '🤡', w: 'Clown'},
+            {l: 'D', e: '🐉', w: 'Drache'}, {l: 'E', e: '🐘', w: 'Elefant'}, {l: 'F', e: '🐟', w: 'Fisch'},
+            {l: 'G', e: '🦒', w: 'Giraffe'}, {l: 'H', e: '🏠', w: 'Haus'}, {l: 'I', e: '🦔', w: 'Igel'},
+            {l: 'J', e: '🐆', w: 'Jaguar'}, {l: 'K', e: '🐱', w: 'Katze'}, {l: 'L', e: '🦁', w: 'Löwe'},
+            {l: 'M', e: '🐭', w: 'Maus'}, {l: 'N', e: '🦏', w: 'Nashorn'}, {l: 'O', e: '🍊', w: 'Orange'},
+            {l: 'P', e: '🐧', w: 'Pinguin'}, {l: 'Q', e: '🪼', w: 'Qualle'}, {l: 'R', e: '🚀', w: 'Rakete'},
+            {l: 'S', e: '☀️', w: 'Sonne'}, {l: 'T', e: '🐯', w: 'Tiger'}, {l: 'U', e: '⌚', w: 'Uhr'},
+            {l: 'V', e: '🐦', w: 'Vogel'}, {l: 'W', e: '🐋', w: 'Wal'}, {l: 'X', e: '🎹', w: 'Xylophon'},
+            {l: 'Y', e: '🐂', w: 'Yak'}, {l: 'Z', e: '🦓', w: 'Zebra'}
+        ];
+
+        let respuestaCorrecta = "";
+
+        function decir(texto) {
+            window.speechSynthesis.cancel();
+            const msg = new SpeechSynthesisUtterance(texto);
+            msg.lang = 'de-DE';
+            window.speechSynthesis.speak(msg);
+        }
+
+        function cargarJuego() {
+            const tablero = document.getElementById('tablero');
+            alfabeto.forEach(item => {
+                const div = document.createElement('div');
+                div.className = 'card card-abc';
+                div.innerHTML = `<div>${item.l}</div><div style="font-size:60px">${item.e}</div>`;
+                div.onclick = () => verificar(item);
+                tablero.appendChild(div);
+            });
+        }
+
+        function hacerPregunta() {
+            const random = alfabeto[Math.floor(Math.random() * alfabeto.length)];
+            respuestaCorrecta = random.l;
+            decir("Wo ist das " + respuestaCorrecta + " wie " + random.w + "?");
+        }
+
+        function verificar(item) {
+            if (item.l === respuestaCorrecta) {
+                decir("Gut gemacht! " + item.l + " wie " + item.w);
+                setTimeout(hacerPregunta, 2500);
+            } else {
+                decir(item.l + " wie " + item.w);
+            }
+        }
+
+        window.onload = () => { cargarJuego(); setTimeout(hacerPregunta, 1000); };
+    </script>
+</body>
+</html>

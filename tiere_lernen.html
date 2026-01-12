@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <a href="index.html" class="btn-home">🏠</a>
+    <h1>Tiere lernen 🦁</h1>
+
+    <button class="btn-learn" onclick="reproducirTodo()">▶️ Alles hören (Escuchar todo)</button>
+
+    <div class="container" id="tablero"></div>
+
+    <script>
+        const datos = [
+            { n: 'Hund', e: '🐶' }, { n: 'Katze', e: '🐱' }, { n: 'Löwe', e: '🦁' },
+            { n: 'Elefant', e: '🐘' }, { n: 'Vogel', e: '🐦' }, { n: 'Schwein', e: '🐷' }
+        ];
+
+        function decir(texto, callback) {
+            window.speechSynthesis.cancel();
+            const msg = new SpeechSynthesisUtterance(texto);
+            msg.lang = 'de-DE';
+            if (callback) msg.onend = callback;
+            window.speechSynthesis.speak(msg);
+        }
+
+        function cargarTablero() {
+            const tablero = document.getElementById('tablero');
+            datos.forEach((item, index) => {
+                const div = document.createElement('div');
+                div.className = 'card';
+                div.id = 'card-' + index;
+                div.innerHTML = `<span class="emoji">${item.e}</span>`;
+                div.onclick = () => decir(item.n);
+                tablero.appendChild(div);
+            });
+        }
+
+        async function reproducirTodo() {
+            for (let i = 0; i < datos.length; i++) {
+                const card = document.getElementById('card-' + i);
+                card.classList.add('highlight'); // Ilumina
+                
+                await new Promise(resolve => {
+                    decir(datos[i].n, () => {
+                        setTimeout(() => {
+                            card.classList.remove('highlight'); // Apaga
+                            resolve();
+                        }, 500); // Pausa entre animales
+                    });
+                });
+            }
+        }
+
+        window.onload = cargarTablero;
+    </script>
+</body>
+</html>

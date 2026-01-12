@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .card-abc { 
+            width: 140px; height: 160px; 
+            transition: all 0.3s ease;
+        }
+        .abc-letter { font-size: 80px; font-weight: bold; color: #2980b9; }
+        .abc-info { display: none; text-align: center; } /* Escondido por defecto */
+        .abc-emoji { font-size: 60px; display: block; }
+        .abc-word { font-size: 18px; color: #555; font-weight: bold; }
+
+        /* Cuando la tarjeta está activa o seleccionada */
+        .show-info .abc-letter { font-size: 40px; }
+        .show-info .abc-info { display: block; }
+    </style>
+</head>
+<body>
+    <a href="index.html" class="btn-home">🏠</a>
+    <h1>ABC lernen 🔤</h1>
+    
+    <button class="btn-learn" onclick="reproducirTodo()"▶️ ABC Lied (Autoplay)</button>
+
+    <div class="container" id="tablero"></div>
+
+    <script>
+        const alfabeto = [
+            {l: 'A', e: '🍎', w: 'Apfel'}, {l: 'B', e: '🐻', w: 'Bär'}, {l: 'C', e: '🤡', w: 'Clown'},
+            {l: 'D', e: '🐉', w: 'Drache'}, {l: 'E', e: '🐘', w: 'Elefant'}, {l: 'F', e: '🐟', w: 'Fisch'},
+            {l: 'G', e: '🦒', w: 'Giraffe'}, {l: 'H', e: '🏠', w: 'Haus'}, {l: 'I', e: '🦔', w: 'Igel'},
+            {l: 'J', e: '🐆', w: 'Jaguar'}, {l: 'K', e: '🐱', w: 'Katze'}, {l: 'L', e: '🦁', w: 'Löwe'},
+            {l: 'M', e: '🐭', w: 'Maus'}, {l: 'N', e: '🦏', w: 'Nashorn'}, {l: 'O', e: '🍊', w: 'Orange'},
+            {l: 'P', e: '🐧', w: 'Pinguin'}, {l: 'Q', e: '🪼', w: 'Qualle'}, {l: 'R', e: '🚀', w: 'Rakete'},
+            {l: 'S', e: '☀️', w: 'Sonne'}, {l: 'T', e: '🐯', w: 'Tiger'}, {l: 'U', e: '⌚', w: 'Uhr'},
+            {l: 'V', e: '🐦', w: 'Vogel'}, {l: 'W', e: '🐋', w: 'Wal'}, {l: 'X', e: '🎹', w: 'Xylophon'},
+            {l: 'Y', e: '🐂', w: 'Yak'}, {l: 'Z', e: '🦓', w: 'Zebra'}
+        ];
+
+        function decir(texto, callback) {
+            window.speechSynthesis.cancel();
+            const msg = new SpeechSynthesisUtterance(texto);
+            msg.lang = 'de-DE';
+            if (callback) msg.onend = callback;
+            window.speechSynthesis.speak(msg);
+        }
+
+        function cargarTablero() {
+            const tablero = document.getElementById('tablero');
+            tablero.innerHTML = ""; 
+            alfabeto.forEach((item, i) => {
+                const div = document.createElement('div');
+                div.className = 'card card-abc';
+                div.id = 'abc-' + i;
+                div.innerHTML = `
+                    <div class="abc-letter">${item.l}</div>
+                    <div class="abc-info">
+                        <span class="abc-emoji">${item.e}</span>
+                        <span class="abc-word">${item.w}</span>
+                    </div>
+                `;
+                
+                div.onclick = () => {
+                    // Quitar info de otros y mostrar en este
+                    document.querySelectorAll('.card-abc').forEach(c => c.classList.remove('show-info'));
+                    div.classList.add('show-info');
+                    decir(item.l + " wie " + item.w);
+                };
+                tablero.appendChild(div);
+            });
+        }
+
+        async function reproducirTodo() {
+            for (let i = 0; i < alfabeto.length; i++) {
+                const card = document.getElementById('abc-' + i);
+                
+                // Limpiar resaltados anteriores
+                document.querySelectorAll('.card-abc').forEach(c => {
+                    c.classList.remove('show-info');
+                    c.classList.remove('highlight');
+                });
+
+                card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                card.classList.add('show-info');
+                card.classList.add('highlight');
+                
+                await new Promise(res => {
+                    decir(alfabeto[i].l + " wie " + alfabeto[i].w, () => {
+                        setTimeout(() => { 
+                            res(); 
+                        }, 500); 
+                    });
+                });
+            }
+        }
+
+        window.onload = cargarTablero;
+    </script>
+</body>
+</html>

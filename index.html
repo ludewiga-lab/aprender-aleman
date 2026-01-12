@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Lernkonsole - Menü</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .category-container {
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 30px;
+            padding: 20px;
+            margin-bottom: 30px;
+            display: inline-block;
+            width: 90%;
+            max-width: 800px;
+            border: 2px dashed #ccc;
+        }
+        .category-title {
+            font-size: 2rem;
+            margin-bottom: 15px;
+            color: #444;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+        .mode-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+        .card-small {
+            width: 160px !important;
+            height: 160px !important;
+            font-size: 1.2rem !important;
+        }
+        .card-small .emoji {
+            font-size: 60px !important;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Hallo! 👋</h1>
+    <p style="font-size: 20px;">Was möchtest du heute machen?</p>
+
+    <div class="category-container">
+        <div class="category-title">🦁 <span>Tiere</span></div>
+        <div class="mode-buttons">
+            <a href="tiere_lernen.html" class="card card-small" onclick="decir('Tiere lernen')">
+                <span class="emoji">📖</span>
+                <span>Lernen</span>
+            </a>
+            <a href="tiere.html" class="card card-small" onclick="decir('Tiere spielen')">
+                <span class="emoji">🎮</span>
+                <span>Quiz</span>
+            </a>
+        </div>
+    </div>
+
+    <div class="category-container">
+        <div class="category-title">🔢 <span>Zahlen</span></div>
+        <div class="mode-buttons">
+            <a href="zahlen_lernen.html" class="card card-small" onclick="decir('Zahlen lernen')">
+                <span class="emoji">📖</span>
+                <span>Lernen</span>
+            </a>
+            <a href="zahlen.html" class="card card-small" onclick="decir('Zahlen spielen')">
+                <span class="emoji">🎮</span>
+                <span>Quiz</span>
+            </a>
+        </div>
+    </div>
+
+<div class="category-container">
+    <div class="category-title">🔤 <span>ABC</span></div>
+    <div class="mode-buttons">
+        <a href="abc_lernen.html" class="card card-small">
+            <span class="emoji">📖</span>
+            <span>Wörter</span>
+        </a>
+        <a href="abc_letras.html" class="card card-small" style="border-color: #9b59b6;">
+            <span class="emoji">⌨️</span>
+            <span>Buchstaben</span>
+        </a>
+        <a href="abc.html" class="card card-small">
+            <span class="emoji">🎮</span>
+            <span>Quiz</span>
+        </a>
+    </div>
+</div>
+
+    <script>
+        function decir(texto) {
+            window.speechSynthesis.cancel();
+            const msg = new SpeechSynthesisUtterance(texto);
+            msg.lang = 'de-DE';
+            window.speechSynthesis.speak(msg);
+        }
+
+        // Bienvenida al abrir
+        window.onload = () => {
+            setTimeout(() => {
+                decir("Hallo! Was möchtest du heute lernen?");
+            }, 500);
+        };
+    </script>
+</body>
+</html>

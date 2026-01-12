@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <a href="index.html" class="btn-home">🏠</a>
+    <h1>Zahlen lernen 🔢</h1>
+    <button class="btn-learn" onclick="reproducirTodo()">▶️ Zählen (Contar)</button>
+    <div class="container" id="tablero"></div>
+
+    <script>
+        function decir(texto, callback) {
+            window.speechSynthesis.cancel();
+            const msg = new SpeechSynthesisUtterance(texto);
+            msg.lang = 'de-DE';
+            if (callback) msg.onend = callback;
+            window.speechSynthesis.speak(msg);
+        }
+
+        function cargarTablero() {
+            const tablero = document.getElementById('tablero');
+            for (let i = 1; i <= 20; i++) {
+                const div = document.createElement('div');
+                div.className = 'card';
+                div.id = 'num-' + i;
+                div.style.width = '100px'; div.style.height = '100px';
+                div.innerHTML = `<span style="font-size:40px">${i}</span>`;
+                div.onclick = () => decir(i.toString());
+                tablero.appendChild(div);
+            }
+        }
+
+        async function reproducirTodo() {
+            for (let i = 1; i <= 20; i++) {
+                const card = document.getElementById('num-' + i);
+                card.classList.add('highlight');
+                await new Promise(res => {
+                    decir(i.toString(), () => {
+                        setTimeout(() => { card.classList.remove('highlight'); res(); }, 300);
+                    });
+                });
+            }
+        }
+        window.onload = cargarTablero;
+    </script>
+</body>
+</html>
